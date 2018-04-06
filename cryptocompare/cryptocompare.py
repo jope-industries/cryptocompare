@@ -17,6 +17,9 @@ URL_PRICE_MULTI_FULL = 'https://min-api.cryptocompare.com/data/pricemultifull?fs
 URL_HIST_PRICE = 'https://min-api.cryptocompare.com/data/pricehistorical?fsym={}&tsyms={}&ts={}'
 URL_HIST_PRICE_DAY = 'https://min-api.cryptocompare.com/data/histoday?fsym={}&tsym={}'
 URL_HIST_PRICE_HOUR = 'https://min-api.cryptocompare.com/data/histohour?fsym={}&tsym={}'
+# XXX: using parallel techniques to manage parameters, merge these at some point
+URL_HISTO_PRICE_DAY = 'https://min-api.cryptocompare.com/data/histoday?{}'
+URL_HISTO_PRICE_HOUR = 'https://min-api.cryptocompare.com/data/histohour?{}'
 URL_AVG = 'https://min-api.cryptocompare.com/data/generateAvg?fsym={}&tsym={}&e={}'
 URL_EXCHANGES = 'https://www.cryptocompare.com/api/data/exchanges'
 
@@ -115,7 +118,36 @@ def get_histo_day(coin, curr=CURR, params={}):
     filtered_params = parameter_filter(params, allowed_params)
     param_copy = default_params.copy()
     param_copy.update(filtered_params)
-    res = query_cryptocompare(URL_HISTO_DAY.format(urlencode(param_copy)))
+    res = query_cryptocompare(URL_HISTO_PRICE_DAY.format(urlencode(param_copy)))
+    return res
+
+def get_histo_hour(coin, curr=CURR, params={}):
+    """
+    Allowed parameters include:
+        Parameter	Type	Required	Default 	Info
+        fsym	string	true	 	From Symbol
+        tsym	string	true	 	To Symbols
+        e	string	true	CCCAGG	Name of exchange
+        extraParams	string	false	NotAvailable	Name of your application
+        sign	bool	false	false	If set to true, the server will sign the requests.
+        tryConversion	bool	false	true	If set to false, it will try to get values without using any conversion at all
+        aggregate	int	false	1
+        limit	int	false	168	Max 2000
+        toTs	timestamp	false
+
+        From https://www.cryptocompare.com/api/#-api-data-histohour-
+
+        Note: cryptocompare api has an error, where the limit is off-by-one.  For example, if you want 30 days, pass limit=29.
+    """
+    default_params = {
+        'tsym': curr,
+        'fsym': coin,
+    }
+    allowed_params = set(['fsym', 'tsym', 'e', 'extraParams', 'sign', 'tryConversion', 'aggregate', 'limit', 'toTs'])
+    filtered_params = parameter_filter(params, allowed_params)
+    param_copy = default_params.copy()
+    param_copy.update(filtered_params)
+    res = query_cryptocompare(URL_HISTO_PRICE_HOUR.format(urlencode(param_copy)))
     return res
 
 def get_avg(coin, curr=CURR, markets='CCCAGG'):

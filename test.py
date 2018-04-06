@@ -32,11 +32,17 @@ class TestCryptoCompare(unittest.TestCase):
         self.assertEqual(type(res), list, "expected list")
         self.assertTrue(len(res) > 0, "expected data")
 
-    def test_get_histo_hour(self):
-        res = cryptocompare.get_historical_price_hour('BTC', 'USD')
-        print res
-        # self.assertEqual(type(res), list, "expected list")
-        # self.assertTrue(len(res) > 0, "expected data")
+    def test_get_histo_hour_no_params(self):
+        res = cryptocompare.get_histo_hour('BTC')
+        self.assertTrue('Data' in res.keys(), "expected 'Data'")
+        # XXX: cryptocompare is off-by-one
+        self.assertEqual(169, len(res['Data']), "response data defaults to 11 days")
+
+    def test_get_histo_hour_params(self):
+        res = cryptocompare.get_histo_hour('BTC', 'USD', params={'limit': 10})
+        self.assertTrue('Data' in res.keys(), "expected 'Data'")
+        # XXX: cryptocompare is off-by-one
+        self.assertEqual(11, len(res['Data']), "response data defaults to 11 days")
 
     # def test_catchall(arg):
         # print('================== HIST PRICE DAY ================')
