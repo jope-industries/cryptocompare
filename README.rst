@@ -75,6 +75,18 @@ Historical Price
 
    # {'XMR': {'EUR': 43.05}}
 
+Day
+---
+.. code:: python
+
+   cryptocompare.get_historical_price_day('BTC', curr='EUR')
+
+Hour
+----
+.. code:: python
+
+   cryptocompare.get_historical_price_hour('BTC', curr='EUR')
+
 Average
 -------
 
@@ -102,6 +114,13 @@ Average
    # 'CHANGEPCT24HOUR': -6.182593102731363
    # }
 
+
+Exchanges
+---------
+
+.. code:: python
+
+   cryptocompare.get_exchanges()
 
 
 Credit

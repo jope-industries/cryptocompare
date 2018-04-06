@@ -32,26 +32,24 @@ class TestCryptoCompare(unittest.TestCase):
         self.assertEqual(type(res), list, "expected list")
         self.assertTrue(len(res) > 0, "expected data")
 
-    def test_get_price(self):
-        print "-- testing get_price() --"
-        cryptocompare.get_price(coins[0])
-        cryptocompare.get_price(coins[1], curr='USD')
-        cryptocompare.get_price(coins[2], curr=['EUR','USD','GBP'])
-        cryptocompare.get_price(coins[2], curr=['EUR','USD','GBP'])
-        cryptocompare.get_price(coins[2], full=True)
-        cryptocompare.get_price(coins[0], curr='USD', full=True)
-        cryptocompare.get_price(coins[1], curr=['EUR','USD','GBP'], full=True)
-        cryptocompare.get_price(coins)
-        cryptocompare.get_price(coins, curr='USD')
-        cryptocompare.get_price(coins, curr=['EUR','USD','GBP'])
+    def test_get_histo_hour(self):
+        res = cryptocompare.get_historical_price_hour('BTC', 'USD')
+        print res
+        # self.assertEqual(type(res), list, "expected list")
+        # self.assertTrue(len(res) > 0, "expected data")
 
-    def test_get_historical_price(self):
-        print "-- testing get_historical_price() --"
-        cryptocompare.get_historical_price(coins[0])
-        cryptocompare.get_historical_price(coins[0], curr='USD')
-        cryptocompare.get_historical_price(coins[1], curr=['EUR','USD','GBP'])
-        cryptocompare.get_historical_price(coins[1], 'USD',datetime.datetime.now())
-        cryptocompare.get_historical_price(coins[2], ['EUR','USD','GBP'],time.time())
+    # def test_catchall(arg):
+        # print('================== HIST PRICE DAY ================')
+        # print(cryptocompare.get_historical_price_day(coins[0]))
+        # print(cryptocompare.get_historical_price_day(coins[0], curr='USD'))
+        # print(cryptocompare.get_historical_price_day(coins[1], curr=['EUR','USD','GBP']))
+        #
+        # print('======================== AVG =====================')
+        # print(cryptocompare.get_avg(coins[0], markets='Coinbase'))
+        # print(cryptocompare.get_avg(coins[0], curr='USD', markets='Coinbase'))
+        #
+        # print('====================== EXCHANGES =================')
+        # print(cryptocompare.get_exchanges())
 
     def test_get_historical_price_hour(self):
         print "-- testing get_historical_price_hour() --"
@@ -66,3 +64,4 @@ class TestCryptoCompare(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+    TestCryptoCompare.test_catchall()
